@@ -1,28 +1,43 @@
-import { Component, signal } from '@angular/core';
-import {DUMMY_USERS} from '../dummy-users';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
+type User = {
+  id: string; // The user ID
+  avatar: string; // The avatar image URL
+  name: string; // The name of the user
+};
 
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [],
   templateUrl: './user.html',
-  styleUrl: './user.css'
+  styleUrl: './user.css',
 })
 export class UserComponent {
-  // Addig user from dummy users
-  selectedUser = signal(DUMMY_USERS[randomIndex]) ; 
+  // @Input({required: true}) id!: string; // The user object with avatar and name
+  // @Input({required: true}) avatar!:  string; // The avatar image URL
+  // @Input({required: true}) name!: string; // The name of the user
+
+  @Input({ required: true }) user!: User; // The user object with id, avatar, and name
+
+  @Output() select = new EventEmitter<string>(); // Event emitter to notify parent component when a user is selected
 
   get imagePath() {
-    // selectedUser()    // is a signal, so we need to call it as a function
-    // selectedUser().avatar  // to get the avatar property
-    return 'assets/users/' + this.selectedUser().avatar;
+    return 'assets/users/' + this.user.avatar;
   }
+
+  // Using input() to create a signal for the avatar and name properties
+  // these are read-only properties
+
+  // avatar = input.required<string>();
+  // name = input.required<string>();
+
+  // imagePath = computed(() => {
+  //   return 'assets/users/' + this.avatar()
+  // });
 
   onSelectUser() {
-    const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
-    console.log('User selected:', this.selectedUser.set(DUMMY_USERS[randomIndex]));
+    this.select.emit(this.user.id); // Emit the user ID when the user is selected
+    return 'assets/users/' + this.user.avatar;
   }
-
 }
