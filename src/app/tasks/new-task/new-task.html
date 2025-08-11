@@ -3,7 +3,7 @@
 <div class="backdrop" (click)="onCancel()"></div>
 <dialog open>
   <h2>Add Task</h2>
-  <form>
+  <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
     <p>
       <label for="title">Title-1</label>
       <!-- Two-way data binding using ngModel for enteredTitle property -->

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TaskComponent } from './task/task';
 import { NewTaskComponent } from './new-task/new-task';
+import { NewTaskData } from './task/taskModel';
 
 @Component({
   selector: 'app-tasks',
@@ -75,4 +76,16 @@ export class TasksComponent {
     console.log('Add Task cancelled');
   }
   // Method to handle task creation (to be implemented)
+  onCreateTask(taskData: NewTaskData) {
+    // push a new task to the tasks array
+    this.tasks.push({
+      id: Math.random().toString(),
+      userId: this.Id,
+      title: taskData.title,
+      description: taskData.description,
+      dueDate: taskData.dueDate,
+    });
+    this.isAddingTask = false; // Reset the adding task flag
+    console.log('New task created:', taskData);
+  }
 }
